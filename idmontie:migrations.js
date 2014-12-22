@@ -79,7 +79,7 @@ if ( Meteor.isServer ) {
      * which migration to run.
      *
      * @param String name Name of the migration
-     * @param Function newMigrationCallback
+     * @param Function newMigrationCallback The new function to run once and only once
      */
     update : function ( name, newMigrationCallback ) {
       'use strict';
