@@ -2,11 +2,10 @@
  * Meteor Migration
  *
  * Simple database migrations for meteor
- * 
+ *
  * @author idmontie
  */
 
-/* global Meteor */
 /* global console */
 
 if ( Meteor.isServer ) {
@@ -48,7 +47,7 @@ if ( Meteor.isServer ) {
     },
     /**
      * Removes the migration from the current queue.
-     * This does NOT remove the migration from the collection of 
+     * This does NOT remove the migration from the collection of
      * previously run migrations.
      *
      * To remove a migration to allow it to rerun, use removeFromDatabase.
@@ -62,10 +61,12 @@ if ( Meteor.isServer ) {
     },
     /**
      * Removes the migration from the database, so that it can be run again.
-     * 
+     *
      * @param String name Name of the migration
      */
     removeFromDatabase : function ( name ) {
+      'use strict';
+
       // TODO settings should dictate what db to use
       _$.warehouse.remove( {
         name : name
@@ -84,7 +85,7 @@ if ( Meteor.isServer ) {
     update : function ( name, newMigrationCallback ) {
       'use strict';
 
-      _$.Migrations.migrations[name] = migrationCallback
+      _$.Migrations.migrations[name] = newMigrationCallback
     },
     /**
      * Enables console logs for already run migrations.
@@ -101,7 +102,7 @@ if ( Meteor.isServer ) {
      */
     migrations : {}
   };
-  
+
   // ==============
   // Meteor Startup
   // ==============
@@ -121,14 +122,14 @@ if ( Meteor.isServer ) {
 
           _$.Migrations.migrations[property]()
 
-          _$.Migrations.warehouse.insert( { 
-            name : property 
+          _$.Migrations.warehouse.insert( {
+            name : property
           } )
 
           console.log ( '> Finishing ' + property + ' migration.' )
         } else {
           if ( _$.verbose ) {
-            console.log( '> Skipping ' + property + '.' )  
+            console.log( '> Skipping ' + property + '.' )
           }
         }
       }
