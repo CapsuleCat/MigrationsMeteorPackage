@@ -1,7 +1,7 @@
 Meteor Migrations
 =================
 
-[![GitHub license](https://img.shields.io/github/license/idmontie/migration.svg?style=flat)](https://github.com/idmontie/migrations/blob/master/LICENSE.md)
+[![GitHub license](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://github.com/idmontie/migrations/blob/master/LICENSE.md)
 
 Simple migrations framework for Meteor.
 
