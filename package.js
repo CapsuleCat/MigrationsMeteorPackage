@@ -1,8 +1,8 @@
 Package.describe({
   name: 'idmontie:migrations',
-  summary: ' /* Fill me in! */ ',
+  summary: 'Simple database migrations for meteor',
   version: '1.0.0',
-  git: ' /* Fill me in! */ '
+  git: 'https://github.com/idmontie/migrations.git'
 });
 
 Package.onUse(function(api) {
