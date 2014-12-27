@@ -9,7 +9,7 @@ Add functions that should only be run once -- ever.
 
 # Usage
 
-Typically, data migrations should only happen once. The package takes care of the scaffolding for only running functions once ever.  An example for usage would be migrating all Books in a Mongo database to have "titles" instead of "names."  If you htest data with your app, or multiple developers working on the project, you'll find that you need migrations for occasionally.
+Typically, data migrations should only happen once. The package takes care of the scaffolding for only running functions once ever.  An example for usage would be migrating all Books in a Mongo database to have "titles" instead of "names."  If you have test data with your app, or multiple developers working on the project, you'll find that you need migrations for occasionally.
 
 # Documentation
 
