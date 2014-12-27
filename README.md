@@ -93,3 +93,11 @@ Migrations.add( 'add-place-types-to-database', function () {
   }
 } );
 ```
+
+# For Developers
+
+To run the TinyTests, just run the following meteor command:
+
+```cmd
+meteor test-packages ./
+```
