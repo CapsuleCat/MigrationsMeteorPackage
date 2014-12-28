@@ -2,6 +2,8 @@
 // Test by running migrations
 // ==========================
 
+/* global Migrations */
+
 // =================
 // Clean up old data
 // =================
@@ -18,7 +20,7 @@ _$.data = new Meteor.Collection( 'test-migrations-data-' + Date.now() );
 Migrations.removeFromDatabase('transform-data');
 Migrations.add( 'transform-data', function () {
   'use strict';
-  
+
   _$.data.update( {}, {
     $rename : {
       value : 'renamed'
@@ -30,11 +32,10 @@ Migrations.add( 'transform-data', function () {
 Migrations.removeFromDatabase('data');
 Migrations.add( 'data', function () {
   'use strict';
-  
+
   _$.data.insert( {
     value: 'wow'
   } )
-
 }, 0 );
 
 // =====
@@ -43,13 +44,13 @@ Migrations.add( 'data', function () {
 Tinytest.add('data should not have values post migration', function (test) {
   'use strict';
 
-  var nExistsData = data.findOne( {
+  var nExistsData = _$.data.findOne( {
     value : 'wow'
   } )
 
   test.isUndefined( nExistsData )
 
-  var existsData = data.findOne( {
+  var existsData = _$.data.findOne( {
     renamed : 'wow'
   } )
 

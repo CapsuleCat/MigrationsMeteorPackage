@@ -119,11 +119,11 @@ if ( Meteor.isServer ) {
         }
 
         _$.Migrations.migrations[i] = {
-          migrationCallback: migrationCallback,
+          migrationCallback: newMigrationCallback,
           name: name,
           order: order
         }
-      } 
+      }
     },
     /**
      * Enables console logs for already run migrations.
@@ -135,14 +135,14 @@ if ( Meteor.isServer ) {
      * Array of migration objects.  Do not use directly.
      *
      * Initially empty, no migrations to run
-     * 
-     * Object structure: 
-     * 
+     *
+     * Object structure:
+     *
      * - orderNumber
      * - name
      * - migrationCallback
-     * 
-     * @type Array 
+     *
+     * @type Array
      */
     migrations : [],
     /**
