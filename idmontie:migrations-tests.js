@@ -17,26 +17,28 @@ _$.data = new Meteor.Collection( 'test-migrations-data-' + Date.now() );
 // Migrations are added in reverse of their priority numbers.
 // This is to test that they are actually run in the correct order.
 // ================================================================
-Migrations.removeFromDatabase('transform-data');
-Migrations.add( 'transform-data', function () {
-  'use strict';
+if ( Meteor.isServer ) {
+  Migrations.removeFromDatabase('transform-data');
+  Migrations.add( 'transform-data', function () {
+    'use strict';
 
-  _$.data.update( {}, {
-    $rename : {
-      value : 'renamed'
-    }
-  })
+    _$.data.update( {}, {
+      $rename : {
+        value : 'renamed'
+      }
+    })
 
-}, 1 );
+  }, 1 );
 
-Migrations.removeFromDatabase('data');
-Migrations.add( 'data', function () {
-  'use strict';
+  Migrations.removeFromDatabase('data');
+  Migrations.add( 'data', function () {
+    'use strict';
 
-  _$.data.insert( {
-    value: 'wow'
-  } )
-}, 0 );
+    _$.data.insert( {
+      value: 'wow'
+    } )
+  }, 0 );
+}
 
 // =====
 // Tests
