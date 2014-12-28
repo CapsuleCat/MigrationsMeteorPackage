@@ -4,5 +4,10 @@ node_js:
 before_install: 
   - npm install -g grunt-cli
   - gem update --system
+  - wget https://raw.github.com/arunoda/travis-ci-meteor-packages/master/Makefile
+  - wget https://raw.github.com/arunoda/travis-ci-meteor-packages/master/start_test.js
+  - wget https://raw.github.com/arunoda/travis-ci-meteor-packages/master/phantom_runner.js
+  - curl https://install.meteor.com | /bin/sh
+  - node start_test.js
   - cd .standards
 install: npm install

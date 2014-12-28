@@ -16,7 +16,11 @@ module.exports = function (grunt) {
           jshintrc: '.jshintrc'
         },
         core: {
-          src: '../*.js'
+          src: [
+            '../*.js',
+            '!../start_test.js',
+            '!../phantom_runner.js'
+          ]
         }
       },
       // JS Coding Style
