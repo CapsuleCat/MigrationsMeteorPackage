@@ -68,7 +68,7 @@ if ( Meteor.isServer ) {
       'use strict';
 
       // TODO settings should dictate what db to use
-      _$.warehouse.remove( {
+      _$.Migrations.warehouse.remove( {
         name : name
       } )
     },

@@ -1,7 +1,57 @@
-// Write your tests here!
-// Here is an example.
-Tinytest.add('example', function (test) {
+// ==========================
+// Test by running migrations
+// ==========================
+
+// =================
+// Clean up old data
+// =================
+var _$ = this;
+
+_$.data = new Meteor.Collection( 'test-migrations-data-' + Date.now() );
+
+// ================================================================
+// Migrations
+//
+// Migrations are added in reverse of their priority numbers.
+// This is to test that they are actually run in the correct order.
+// ================================================================
+Migrations.removeFromDatabase('transform-data');
+Migrations.add( 'transform-data', function () {
+  'use strict';
+  
+  _$.data.update( {}, {
+    $rename : {
+      value : 'renamed'
+    }
+  })
+
+}, 1 );
+
+Migrations.removeFromDatabase('data');
+Migrations.add( 'data', function () {
+  'use strict';
+  
+  _$.data.insert( {
+    value: 'wow'
+  } )
+
+}, 0 );
+
+// =====
+// Tests
+// =====
+Tinytest.add('data should not have values post migration', function (test) {
   'use strict';
 
-  test.equal(true, true);
+  var nExistsData = data.findOne( {
+    value : 'wow'
+  } )
+
+  test.isUndefined( nExistsData )
+
+  var existsData = data.findOne( {
+    renamed : 'wow'
+  } )
+
+  test.isNotNull( existsData )
 });
