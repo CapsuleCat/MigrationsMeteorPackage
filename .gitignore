@@ -1,2 +1,4 @@
 .build*
 .standards/node_modules/*
+.standards/npm-debug.log
+node_modules/*

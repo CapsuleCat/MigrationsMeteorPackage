@@ -111,10 +111,11 @@ if ( Meteor.isServer ) {
       for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
         if ( name == _$.Migrations.migrations[i].name ) {
           if ( order == null ) {
-          order = _$.Migrations.largestOrderNumber + 10
-          _$.Migrations.largestOrderNumber = order
-        } else if ( order > _$.Migrations.largestOrderNumber ) {
-          _$.Migrations.largestOrderNumber = order
+            order = _$.Migrations.largestOrderNumber + 10
+            _$.Migrations.largestOrderNumber = order
+          } else if ( order > _$.Migrations.largestOrderNumber ) {
+            _$.Migrations.largestOrderNumber = order
+          }
         }
 
         _$.Migrations.migrations[i] = {
@@ -175,7 +176,7 @@ if ( Meteor.isServer ) {
     } )
 
 
-    for ( var i = 0; i < _$.Migration.migrations.length; i++ ) {
+    for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
       var migration = _$.Migrations.migrations[i]
       // Do the migration
       var pastMigration = _$.Migrations.warehouse.findOne( {
