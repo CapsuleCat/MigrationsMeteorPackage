@@ -18,7 +18,7 @@ if ( Meteor.isServer ) {
   this.Migrations = {
     /**
      * Meteor collection to store data in
-     * TODO settings should dictate what b to use.
+     * TODO settings should dictate what db to use.
      */
     warehouse : new Meteor.Collection( 'meteor-migrations' ),
     /**
@@ -30,8 +30,15 @@ if ( Meteor.isServer ) {
      *
      * Migration names should be globally unique.
      *
+     * The order number is an optional parameter that sets what
+     * order the migrations should be run in. Migrations are run
+     * from smallest order number to largest order number.  If an
+     * order number is not provided, the largest order number + 10
+     * is used.
+     *
      * @param String name Name of the migration
      * @param Function migrationCallback The function to run once and only once
+     * @param Number order Optional order number
      * @return boolean
      */
     add : function ( name, migrationCallback, order ) {
@@ -111,8 +118,7 @@ if ( Meteor.isServer ) {
       for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
         if ( name == _$.Migrations.migrations[i].name ) {
           if ( order == null ) {
-            order = _$.Migrations.largestOrderNumber + 10
-            _$.Migrations.largestOrderNumber = order
+            order = _$.Migrations.migrations[i].order
           } else if ( order > _$.Migrations.largestOrderNumber ) {
             _$.Migrations.largestOrderNumber = order
           }

@@ -17,7 +17,7 @@ This project adds `Migrations` to the `this` context. The following methods are 
 
 ## add
 
-`Migrations.add( name, migrationCallback )`
+`Migrations.add( name, migrationCallback, optionalOrder )`
 
 ```
 Add a migration.  Will run the given migration once and only
@@ -27,9 +27,15 @@ Returns true if a migration of the same name is not already added.
 Returns false if otherwise.
 
 Migration names should be globally unique.
+The order number is an optional parameter that sets what
+order the migrations should be run in. Migrations are run
+from smallest order number to largest order number.  If an
+order number is not provided, the largest order number + 10
+is used.
 
-name (String) A globally unique migration name
-migrationCallback (Function) A function to run once and only once
+name (String) Name of the migration
+migrationCallback (Function) The function to run once and only once
+order (Number) Optional order number
 ```
 
 ## remove
@@ -58,7 +64,7 @@ name (String) Name of the migration
 
 ## update
 
-`Migrations.update( name, newMigrationCallback )`
+`Migrations.update( name, newMigrationCallback, order )`
 
 ```
 Changes which function to run when the migration is performed.
@@ -69,6 +75,7 @@ which migration to run.
 
 name (String) Name of the migration
 newMigrationCallback (Function) The new function to run once and only once
+order (Number)
 ```
 
 # Examples
