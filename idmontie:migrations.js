@@ -34,11 +34,30 @@ if ( Meteor.isServer ) {
      * @param Function migrationCallback The function to run once and only once
      * @return boolean
      */
-    add : function ( name, migrationCallback ) {
+    add : function ( name, migrationCallback, order ) {
       'use strict';
+      var found = false
 
-      if ( ! ( name in _$.Migrations.migrations ) ) {
-        _$.Migrations.migrations[name] = migrationCallback
+      for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
+        if ( name == _$.Migrations.migrations[i].name ) {
+          found = true
+          break
+        }
+      }
+
+      if ( ! found ) {
+        if ( order == null ) {
+          order = _$.Migrations.largestOrderNumber + 10
+          _$.Migrations.largestOrderNumber = order
+        } else if ( order > _$.Migrations.largestOrderNumber ) {
+          _$.Migrations.largestOrderNumber = order
+        }
+
+        _$.Migrations.migrations.push( {
+          migrationCallback: migrationCallback,
+          name: name,
+          order: order
+        } )
 
         return true
       } else {
@@ -57,7 +76,11 @@ if ( Meteor.isServer ) {
     remove : function ( name ) {
       'use strict';
 
-      delete _$.Migrations.migrations[name]
+      for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
+        if ( _$.Migrations.migrations.name == name ) {
+          delete _$.Migrations.migrations[i];
+        }
+      }
     },
     /**
      * Removes the migration from the database, so that it can be run again.
@@ -82,10 +105,24 @@ if ( Meteor.isServer ) {
      * @param String name Name of the migration
      * @param Function newMigrationCallback The new function to run once and only once
      */
-    update : function ( name, newMigrationCallback ) {
+    update : function ( name, newMigrationCallback, order ) {
       'use strict';
 
-      _$.Migrations.migrations[name] = newMigrationCallback
+      for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
+        if ( name == _$.Migrations.migrations[i].name ) {
+          if ( order == null ) {
+          order = _$.Migrations.largestOrderNumber + 10
+          _$.Migrations.largestOrderNumber = order
+        } else if ( order > _$.Migrations.largestOrderNumber ) {
+          _$.Migrations.largestOrderNumber = order
+        }
+
+        _$.Migrations.migrations[i] = {
+          migrationCallback: migrationCallback,
+          name: name,
+          order: order
+        }
+      } 
     },
     /**
      * Enables console logs for already run migrations.
@@ -94,13 +131,25 @@ if ( Meteor.isServer ) {
      */
     verbose : false,
     /**
-     * Object of migrations.  Do not use directly.
+     * Array of migration objects.  Do not use directly.
      *
      * Initially empty, no migrations to run
-     *
-     * @type Object
+     * 
+     * Object structure: 
+     * 
+     * - orderNumber
+     * - name
+     * - migrationCallback
+     * 
+     * @type Array 
      */
-    migrations : {}
+    migrations : [],
+    /**
+     * Stores the largest order number
+     *
+     * @type Number
+     */
+    largestOrderNumber : 0
   };
 
   // ==============
@@ -110,27 +159,42 @@ if ( Meteor.isServer ) {
   Meteor.startup( function () {
     'use strict';
 
-    for ( var property in _$.Migrations.migrations ) {
-      if ( _$.Migrations.migrations.hasOwnProperty( property ) ) {
-        // Do the migration
-        var pastMigration = _$.Migrations.warehouse.findOne( {
-          name : property
+    /*
+     * Migrations are unsorted.  Sort them and do them in order of
+     * smallest to largest order number
+     */
+
+    _$.Migrations.migrations.sort( function ( a, b ) {
+      if ( a.order < b.order ) {
+        return -1;
+      } else if ( a.order > b.order ) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } )
+
+
+    for ( var i = 0; i < _$.Migration.migrations.length; i++ ) {
+      var migration = _$.Migrations.migrations[i]
+      // Do the migration
+      var pastMigration = _$.Migrations.warehouse.findOne( {
+        name : migration.name
+      } )
+
+      if ( ! pastMigration ) {
+        console.log ( '> Starting ' + migration.name + ' migration.' )
+
+        migration.migrationCallback()
+
+        _$.Migrations.warehouse.insert( {
+          name : migration.name
         } )
 
-        if ( ! pastMigration ) {
-          console.log ( '> Starting ' + property + ' migration.' )
-
-          _$.Migrations.migrations[property]()
-
-          _$.Migrations.warehouse.insert( {
-            name : property
-          } )
-
-          console.log ( '> Finishing ' + property + ' migration.' )
-        } else {
-          if ( _$.verbose ) {
-            console.log( '> Skipping ' + property + '.' )
-          }
+        console.log ( '> Finishing ' + migration.name + ' migration.' )
+      } else {
+        if ( _$.verbose ) {
+          console.log( '> Skipping ' + migration.name + '.' )
         }
       }
     }
