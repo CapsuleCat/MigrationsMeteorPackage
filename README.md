@@ -1,6 +1,6 @@
 Meteor Migrations
 =================
-[![Travis](https://img.shields.io/travis/idmontie/migrations.svg?style=flat)](https://travis-ci.org/idmontie/migrations) 
+[![Travis](https://img.shields.io/travis/idmontie/meteor-migrations.svg?style=flat)](https://travis-ci.org/idmontie/meteor-migrations) 
 [![GitHub license](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://github.com/idmontie/migrations/blob/master/LICENSE.md)
 
 Simple migrations framework for Meteor and Mongo.
