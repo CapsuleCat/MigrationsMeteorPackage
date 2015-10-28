@@ -3,9 +3,13 @@ Meteor Migrations
 [![Travis](https://img.shields.io/travis/idmontie/migrations.svg?style=flat)](https://travis-ci.org/idmontie/migrations) 
 [![GitHub license](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://github.com/idmontie/migrations/blob/master/LICENSE.md)
 
-Simple migrations framework for Meteor.
+Simple migrations framework for Meteor and Mongo.
 
 Add functions that should only be run once -- ever.
+
+# Dependencies
+
+* Built for MongoDB
 
 # Usage
 
