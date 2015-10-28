@@ -16,6 +16,6 @@ Package.onTest( function ( api ) {
   'use strict';
 
   api.use( 'tinytest' )
-  api.use( 'migrations' )
+  api.addFiles( 'migrations.js' )
   api.addFiles('migrations-tests.js' )
 } );
