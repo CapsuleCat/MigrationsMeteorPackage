@@ -21,7 +21,7 @@ This project adds `Migrations` to the `this` context. The following methods are 
 
 ## add
 
-`Migrations.add( name, migrationCallback, optionalOrder )`
+`Migrations.add( name, migrationCallback, optionalRollbackCallback, optionalOrder )`
 
 ```
 Add a migration.  Will run the given migration once and only
@@ -40,6 +40,18 @@ is used.
 name (String) Name of the migration
 migrationCallback (Function) The function to run once and only once
 order (Number) Optional order number
+```
+
+## rollback
+
+`Migrations.rollback( name )`
+
+```
+Runs the rollback callback for the given migration.
+
+This does not remove the migration from the queue,
+but it does remove the database entry for the given
+migration.
 ```
 
 ## remove

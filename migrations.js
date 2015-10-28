@@ -41,8 +41,17 @@ if ( Meteor.isServer ) {
      * @param Number order Optional order number
      * @return boolean
      */
-    add : function ( name, migrationCallback, order ) {
+    add : function ( name, migrationCallback, rollbackCallback, order ) {
       'use strict';
+
+      // If we are called with less than 4 arguments, than assume
+      // that we are being called with the following signature:
+      // ( name, migrationCallback, order ) 
+      if ( arguments.length < 4 ) {
+        order = rollbackCallback;
+        rollbackCallback = null;
+      }
+
       var found = false
 
       for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
@@ -62,6 +71,7 @@ if ( Meteor.isServer ) {
 
         _$.Migrations.migrations.push( {
           migrationCallback: migrationCallback,
+          rollbackCallback: rollbackCallback,
           name: name,
           order: order
         } )
@@ -84,7 +94,7 @@ if ( Meteor.isServer ) {
       'use strict';
 
       for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
-        if ( _$.Migrations.migrations.name == name ) {
+        if ( _$.Migrations.migrations[i].name == name ) {
           delete _$.Migrations.migrations[i];
         }
       }
@@ -130,6 +140,24 @@ if ( Meteor.isServer ) {
           order: order
         }
       }
+    },
+    /**
+     * Rollback a given migration. The migration will be rerun on start up since
+     * this also removes the migration from the database.
+     *
+     * @param String name The name of the migration to rollback
+     */
+    rollback : function ( name ) {
+      for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
+        if ( _$.Migrations.migrations[i].name == name ) {
+          
+          if ( _$.Migrations.migrations[i].rollbackCallback ) {
+            _$.Migrations.migrations[i].rollbackCallback();
+          }
+        }
+      }
+
+      _$.Migrations.removeFromDatabase( name );
     },
     /**
      * Enables console logs for already run migrations.
