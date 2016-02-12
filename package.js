@@ -2,7 +2,7 @@ Package.describe( {
   name: 'idmontie:migrations',
   summary: 'Simple database migrations for meteor',
   version: '1.0.1',
-  git: 'https://github.com/idmontie/migrations.git'
+  git: 'https://github.com/CapsuleCat/MigrationsMeteorPackage.git'
 } );
 
 Package.onUse( function ( api ) {
