@@ -8,8 +8,11 @@ Package.describe( {
 Package.onUse( function ( api ) {
   'use strict';
 
-  api.versionsFrom( '1.0.2' )
-  api.addFiles( 'migrations.js' )
+  api.versionsFrom( '1.0.2' );
+  api.addFiles( 'migrations.js' );
+
+  // Export
+  api.export('Migrations');
 });
 
 Package.onTest( function ( api ) {
