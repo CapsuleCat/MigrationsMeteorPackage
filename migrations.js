@@ -15,7 +15,7 @@ if ( Meteor.isServer ) {
   // Meteor Migrations
   // =================
 
-  this.Migrations = {
+  _$.Migrations = {
     /**
      * Meteor collection to store data in
      * TODO settings should dictate what db to use.
@@ -46,7 +46,7 @@ if ( Meteor.isServer ) {
 
       // If we are called with less than 4 arguments, than assume
       // that we are being called with the following signature:
-      // ( name, migrationCallback, order ) 
+      // ( name, migrationCallback, order )
       if ( arguments.length < 4 ) {
         order = rollbackCallback;
         rollbackCallback = null;
@@ -150,7 +150,7 @@ if ( Meteor.isServer ) {
     rollback : function ( name ) {
       for ( var i = 0; i < _$.Migrations.migrations.length; i++ ) {
         if ( _$.Migrations.migrations[i].name == name ) {
-          
+
           if ( _$.Migrations.migrations[i].rollbackCallback ) {
             _$.Migrations.migrations[i].rollbackCallback();
           }
