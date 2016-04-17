@@ -15,7 +15,7 @@ if ( Meteor.isServer ) {
   // Meteor Migrations
   // =================
 
-  Migrations = {
+  _$.Migrations = {
     /**
      * Meteor collection to store data in
      * TODO settings should dictate what db to use.
