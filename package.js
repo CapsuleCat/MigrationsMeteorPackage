@@ -9,10 +9,10 @@ Package.onUse( function ( api ) {
   'use strict';
 
   api.versionsFrom( '1.0.2' );
-  api.addFiles( 'migrations.js' );
+  api.addFiles( 'migrations.js', 'server' );
 
   // Export
-  api.export('Migrations');
+  api.export('Migrations', 'server');
 });
 
 Package.onTest( function ( api ) {
